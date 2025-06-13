@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -29,24 +29,33 @@ public class Database {
     private static final Map<String, String> TABLE_DEFINITIONS = Map.of(
         "todos", """
             CREATE TABLE todos (
-                id SERIAL PRIMARY KEY,
+                id UUID PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
                 description TEXT,
                 isDone BOOLEAN DEFAULT FALSE
             )
-            """
+            """,
+        "users", """
+            CREATE TABLE users (
+                id uuid PRIMARY KEY,
+                email VARCHAR(255) NOT NULL UNIQUE,
+                password VARCHAR(255) NOT NULL,
+                firstName VARCHAR(255) DEFAULT '',
+                lastName VARCHAR(255),
+                avatar VARCHAR(255),
+                isActive BOOLEAN DEFAULT FALSE NOT NULL,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """
     );
 
-    private static final List<String> TABLES = List.of("todos");
+    private static final List<String> TABLES = List.of("todos", "users");
 
-    public Database(
-        @Value("${spring.datasource.url}") String url,
-        @Value("${spring.datasource.username}") String username,
-        @Value("${spring.datasource.password}") String password
-    ) {
-        this.url = url;
-        this.username = username;
-        this.password = password;
+    public Database(Environment env) {
+        this.url = env.getProperty("spring.datasource.url");
+        this.username = env.getProperty("spring.datasource.username");
+        this.password = env.getProperty("spring.datasource.password");
     }
 
     public Connection getConnection() throws SQLException {
@@ -57,7 +66,7 @@ public class Database {
         return isConnected;
     }
 
-    public void createTable(String tableName) {
+    private void createTable(String tableName) {
         String createSql = TABLE_DEFINITIONS.get(tableName);
         if (createSql == null) {
             System.out.println("Table definition not found for: " + tableName);
