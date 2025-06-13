@@ -78,4 +78,4 @@ $RECYCLE.BIN/
 .nfs*
 
 ### Application Properties ###
-!src/main/resources/application.properties 
+src/main/resources/application.properties 
