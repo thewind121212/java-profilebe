@@ -1,4 +1,4 @@
-package com.wliafdew.service.impl;
+package com.wliafdew.domain.user;
 
 import java.util.List;
 import java.util.UUID;

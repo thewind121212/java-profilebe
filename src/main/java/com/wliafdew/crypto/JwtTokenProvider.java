@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +29,10 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateEmailVerificationToken(String email) {
+    public String generateEmailVerificationToken(String email, UUID id) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
+        claims.put("id", id);
         claims.put("type", "email_verification");
         return createToken(claims);
     }
@@ -54,6 +56,10 @@ public class JwtTokenProvider {
 
     public String extractEmail(String token) {
         return extractClaim(token, claims -> claims.get("email", String.class));
+    }
+
+    public String extractId(String token) {
+        return extractClaim(token, claims -> claims.get("id", String.class));
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

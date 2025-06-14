@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.wliafdew.domain.user.usersServiceImpl;
 import com.wliafdew.exception.ResourceNotFoundException;
 import com.wliafdew.model.users;
-import com.wliafdew.service.impl.usersServiceImpl;
 
 @RestController
 @RequestMapping("/api/users")
