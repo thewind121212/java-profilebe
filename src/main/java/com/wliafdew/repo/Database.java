@@ -59,6 +59,7 @@ public class Database {
                 status VARCHAR(255),
                 error_message TEXT,
                 stack_trace TEXT DEFAULT ''
+                createAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         """
     );
