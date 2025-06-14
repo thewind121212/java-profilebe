@@ -9,7 +9,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import com.wliafdew.model.Todo;
-import com.wliafdew.repo.Database;
 
 @Repository
 public class TodoRepository {
