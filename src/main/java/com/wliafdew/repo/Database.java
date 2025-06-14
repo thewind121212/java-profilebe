@@ -47,10 +47,23 @@ public class Database {
                 createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        """,
+        "api_logs", """
+            CREATE TABLE api_logs (
+                id SERIAL PRIMARY KEY,
+                class_name VARCHAR(255) NOT NULL,
+                method_name VARCHAR(255) NOT NULL,
+                start_time TIMESTAMP NOT NULL,
+                end_time TIMESTAMP NOT NULL,
+                execution_time BIGINT NOT NULL,
+                status VARCHAR(255) NOT NULL,
+                error_message TEXT,
+                stack_trace TEXT
+            )
         """
     );
 
-    private static final List<String> TABLES = List.of("todos", "users");
+    private static final List<String> TABLES = List.of("todos", "users", "api_logs");
 
     public Database(Environment env) {
         this.url = env.getProperty("spring.datasource.url");

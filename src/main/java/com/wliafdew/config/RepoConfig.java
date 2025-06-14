@@ -4,11 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import com.wliafdew.repo.ApiLogRepository;
 import com.wliafdew.repo.Database;
 import com.wliafdew.repo.TodoRepository;
 
 @Configuration
-public class DatabaseConfig {
+public class RepoConfig {
 
     @Bean
     public Database database(Environment env) {
@@ -20,5 +21,10 @@ public class DatabaseConfig {
     @Bean
     public TodoRepository todoRepository(Database database) {
         return new TodoRepository(database);
+    }
+
+    @Bean
+    public ApiLogRepository apiLogRepository(Database database) {
+        return new ApiLogRepository(database);
     }
 } 
