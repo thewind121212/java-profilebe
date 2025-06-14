@@ -29,7 +29,7 @@ public class Database {
     private static final Map<String, String> TABLE_DEFINITIONS = Map.of(
         "todos", """
             CREATE TABLE todos (
-                id UUID PRIMARY KEY,
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                 title VARCHAR(255) NOT NULL,
                 description TEXT,
                 isDone BOOLEAN DEFAULT FALSE
