@@ -16,7 +16,9 @@ public class ApiLogRepository {
 
     public void save(ApiLog apiLog) {
         try (var conn = database.getConnection();
-                var stmt = conn.prepareStatement("INSERT INTO api_logs (class_name, method_name, start_time, end_time, execution_time, status, error_message, stack_trace) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+                var stmt = conn.prepareStatement(
+                    "INSERT INTO api_logs (id,class_name, method_name, start_time, end_time, execution_time, status, error_message, stack_trace) " +
+                    "VALUES (gen_random_uuid(),?, ?, ?, ?, ?, ?, ?, ?)")) {
             stmt.setString(1, apiLog.getClassName());
             stmt.setString(2, apiLog.getMethodName());
             stmt.setObject(3, apiLog.getStartTime());

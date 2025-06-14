@@ -37,7 +37,7 @@ public class Database {
             """,
         "users", """
             CREATE TABLE users (
-                id uuid PRIMARY KEY,
+                id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
                 email VARCHAR(255) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 firstName VARCHAR(255) DEFAULT '',
@@ -50,15 +50,15 @@ public class Database {
         """,
         "api_logs", """
             CREATE TABLE api_logs (
-                id SERIAL PRIMARY KEY,
-                class_name VARCHAR(255) NOT NULL,
-                method_name VARCHAR(255) NOT NULL,
-                start_time TIMESTAMP NOT NULL,
-                end_time TIMESTAMP NOT NULL,
-                execution_time BIGINT NOT NULL,
-                status VARCHAR(255) NOT NULL,
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                class_name VARCHAR(255),
+                method_name VARCHAR(255),
+                start_time TIMESTAMP,
+                end_time TIMESTAMP,
+                execution_time BIGINT,
+                status VARCHAR(255),
                 error_message TEXT,
-                stack_trace TEXT
+                stack_trace TEXT DEFAULT ''
             )
         """
     );

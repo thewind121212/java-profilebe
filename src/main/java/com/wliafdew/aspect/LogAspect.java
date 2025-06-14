@@ -52,10 +52,10 @@ public class LogAspect {
             apiLog.setExecutionTime(java.time.Duration.between(startTime, endTime).toMillis());
             apiLog.setStatus("ERROR");
             apiLog.setErrorMessage(e.getMessage());
-            
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             apiLog.setStackTrace(sw.toString());
+
             
             System.out.println("❌ Error in " + className + "." + methodName);
             System.out.println("⏳ Failed after: " + apiLog.getExecutionTime() + "ms");
