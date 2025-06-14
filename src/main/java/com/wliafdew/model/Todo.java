@@ -1,26 +1,36 @@
 package com.wliafdew.model;
 
+import java.util.UUID;
+
 public class Todo {
-    private Long id;
+    private UUID id;
     private String title;
     private String description;
-    private boolean isDone;
+    private boolean done;
 
     public Todo() {
+        this.id = UUID.randomUUID();
     }
 
-    public Todo(Long id, String title, String description, boolean isDone) {
+    public Todo(String title, String description, boolean done) {
+        this.id = UUID.randomUUID();
+        this.title = title;
+        this.description = description;
+        this.done = done;
+    }
+
+    public Todo(UUID id, String title, String description, boolean done) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.isDone = isDone;
+        this.done = done;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -40,11 +50,11 @@ public class Todo {
         this.description = description;
     }
 
-    public boolean getIsDone() {
-        return isDone;
+    public boolean isDone() {
+        return done;
     }
 
-    public void setIsDone(boolean isDone) {
-        this.isDone = isDone;
+    public void setDone(boolean done) {
+        this.done = done;
     }
 } 
