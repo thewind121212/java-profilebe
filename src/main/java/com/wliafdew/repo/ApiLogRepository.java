@@ -28,6 +28,7 @@ public class ApiLogRepository {
             stmt.setString(7, apiLog.getErrorMessage());
             stmt.setString(8, apiLog.getStackTrace());
             stmt.executeUpdate();
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

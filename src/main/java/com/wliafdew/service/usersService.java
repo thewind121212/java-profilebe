@@ -13,9 +13,7 @@ public interface usersService {
 
     users insertUser(users user);
 
-    users updateUsers(users user);
+    users updateUsers(users user) throws ResourceNotFoundException;
 
     void deleteUser(UUID id) throws ResourceNotFoundException;
-
-    users getUserByEmail(String email) throws ResourceNotFoundException;
 }

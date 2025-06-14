@@ -5,6 +5,8 @@
 
 package com.wliafdew.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -37,8 +39,8 @@ public class MailService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public void sendVerificationEmail(String toEmail) throws MessagingException {
-        String token = jwtTokenProvider.generateEmailVerificationToken(toEmail);
+    public void sendVerificationEmail(String toEmail, UUID id) throws MessagingException {
+        String token = jwtTokenProvider.generateEmailVerificationToken(toEmail, id);
         String verifyLink = baseUrl + "/verify?token=" + token;
         
         System.out.println("Base URL: " + baseUrl);
