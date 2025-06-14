@@ -5,11 +5,14 @@
 
 package com.wliafdew.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import com.wliafdew.crypto.JwtTokenProvider;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -23,13 +26,24 @@ import jakarta.mail.internet.MimeMessage;
 public class MailService {
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public MailService(JavaMailSender mailSender, TemplateEngine templateEngine) {
+    @Value("${app.base-url}")
+    private String baseUrl;
+
+    public MailService(JavaMailSender mailSender, TemplateEngine templateEngine, JwtTokenProvider jwtTokenProvider) {
         this.mailSender = mailSender;
         this.templateEngine = templateEngine;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public void sendVerificationEmail(String toEmail, String verifyLink) throws MessagingException {
+    public void sendVerificationEmail(String toEmail) throws MessagingException {
+        String token = jwtTokenProvider.generateEmailVerificationToken(toEmail);
+        String verifyLink = baseUrl + "/verify?token=" + token;
+        
+        System.out.println("Base URL: " + baseUrl);
+        System.out.println("Verification Link: " + verifyLink);
+
         Context context = new Context();
         context.setVariable("verificationUrl", verifyLink);
 

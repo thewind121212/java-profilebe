@@ -10,6 +10,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @Configuration
 public class ThymeleafConfig {
 
+    //this is the main template engine that will be used to resolve the html template
     @Bean
     public TemplateEngine emailTemplateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -17,6 +18,7 @@ public class ThymeleafConfig {
         return templateEngine;
     }
 
+    //this is one is only responsible for resolving the html template
     private ClassLoaderTemplateResolver htmlTemplateResolver() {
         ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
         emailTemplateResolver.setPrefix("templates/");
