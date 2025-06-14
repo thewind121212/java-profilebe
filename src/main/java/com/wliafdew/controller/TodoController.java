@@ -1,12 +1,15 @@
 package com.wliafdew.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,54 +18,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wliafdew.model.Todo;
-import com.wliafdew.repo.TodoRepository;
+import com.wliafdew.service.TodoService;
 
 @RestController
 @RequestMapping("/api/todos")
 @CrossOrigin(origins = "*")
 public class TodoController {
-    private final TodoRepository todoRepository;
+    private final TodoService todoService;
 
-    public TodoController(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
+    @Autowired
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     @GetMapping
-    public List<Todo> getAllTodos() {
-        return todoRepository.findAll();
+    public ResponseEntity<List<Todo>> getAllTodos() {
+        return ResponseEntity.ok(todoService.getAllTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable UUID id) {
+        Optional<Todo> todo = todoService.getTodoById(id);
+        return todo.map(ResponseEntity::ok)
+                  .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Todo> createTodo(@RequestBody Todo todo) {
-        todoRepository.save(todo);
-        return ResponseEntity.ok(todo);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Todo> getTodo(@PathVariable UUID id) {
-        return todoRepository.findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(todoService.createTodo(todo));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Todo> updateTodo(@PathVariable UUID id, @RequestBody Todo todo) {
-        return todoRepository.findById(id)
-            .map(existingTodo -> {
-                todo.setId(id);
-                todoRepository.save(todo);
-                return ResponseEntity.ok(todo);
-            })
-            .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Void> updateTodo(@PathVariable UUID id, @RequestBody Todo todo) {
+        todoService.updateTodo(id, todo);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable UUID id) {
-        return todoRepository.findById(id)
-            .map(todo -> {
-                todoRepository.delete(id);
-                return ResponseEntity.ok().<Void>build();
-            })
-            .orElse(ResponseEntity.notFound().build());
+        todoService.deleteTodo(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/completed")
+    public ResponseEntity<List<Todo>> getCompletedTodos() {
+        return ResponseEntity.ok(todoService.getCompletedTodos());
+    }
+
+    @GetMapping("/incomplete")
+    public ResponseEntity<List<Todo>> getIncompleteTodos() {
+        return ResponseEntity.ok(todoService.getIncompleteTodos());
+    }
+
+    @PatchMapping("/{id}/toggle")
+    public ResponseEntity<Void> toggleTodoStatus(@PathVariable UUID id) {
+        todoService.toggleTodoStatus(id);
+        return ResponseEntity.ok().build();
     }
 } 

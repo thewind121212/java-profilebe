@@ -37,7 +37,7 @@ public class Database {
             """,
         "users", """
             CREATE TABLE users (
-                id uuid PRIMARY KEY,
+                id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
                 email VARCHAR(255) NOT NULL UNIQUE,
                 password VARCHAR(255) NOT NULL,
                 firstName VARCHAR(255) DEFAULT '',
@@ -47,10 +47,23 @@ public class Database {
                 createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
+        """,
+        "api_logs", """
+            CREATE TABLE api_logs (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                class_name VARCHAR(255),
+                method_name VARCHAR(255),
+                start_time TIMESTAMP,
+                end_time TIMESTAMP,
+                execution_time BIGINT,
+                status VARCHAR(255),
+                error_message TEXT,
+                stack_trace TEXT DEFAULT ''
+            )
         """
     );
 
-    private static final List<String> TABLES = List.of("todos", "users");
+    private static final List<String> TABLES = List.of("todos", "users", "api_logs");
 
     public Database(Environment env) {
         this.url = env.getProperty("spring.datasource.url");

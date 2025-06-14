@@ -26,7 +26,7 @@ public class TodoRepository {
 
             while (rs.next()) {
                 todos.add(new Todo(
-                        (UUID) rs.getObject("id"),
+                        rs.getObject("id", UUID.class),
                         rs.getString("title"),
                         rs.getString("description"),
                         rs.getBoolean("isDone")));
@@ -45,7 +45,7 @@ public class TodoRepository {
             try (var rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return Optional.of(new Todo(
-                            (UUID) rs.getObject("id"),
+                            rs.getObject("id", UUID.class),
                             rs.getString("title"),
                             rs.getString("description"),
                             rs.getBoolean("isDone")));
