@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 import com.wliafdew.model.Todo;
+import com.wliafdew.repo.Database;
 
 @Repository
 public class TodoRepository {
@@ -91,7 +92,6 @@ public class TodoRepository {
         try (var conn = database.getConnection();
              var stmt = conn.prepareStatement("DELETE FROM todos WHERE id = ?::uuid")) {
             stmt.setObject(1, id);
-            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
