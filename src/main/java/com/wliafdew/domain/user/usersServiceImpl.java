@@ -10,21 +10,21 @@ import org.springframework.stereotype.Service;
 
 import com.wliafdew.exception.ResourceNotFoundException;
 import com.wliafdew.model.users;
-import com.wliafdew.repo.usersRepository;
+import com.wliafdew.repo.UsersRepository;
 import com.wliafdew.service.usersService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 @Service
-public class usersServiceImpl implements usersService {
+public class UsersServiceImpl implements usersService {
 
-    usersRepository usersRepository;
+    UsersRepository usersRepository;
 
     private EntityManager entityManager;
 
     @Autowired
-    public void setUsersRepository(usersRepository usersRepository) {
+    public void setUsersRepository(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
