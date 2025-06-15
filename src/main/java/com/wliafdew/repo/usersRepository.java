@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 import com.wliafdew.model.users;
 
 @Repository
-public interface usersRepository extends JpaRepository<users, UUID> {
-    
+public interface UsersRepository extends JpaRepository<users, UUID> {
 }
