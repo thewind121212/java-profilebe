@@ -48,8 +48,18 @@ public class UsersServiceImpl implements usersService {
     }
 
     @Override
-    public users insertUser(users user) {
+    public users insertUser(users user) throws Exception {
+        users checkUserEmail = usersRepository.getUserByEmail(user.getEmail());
+        if(checkUserEmail != null)
+            throw new Exception("User email already exists");
+
+        //set user id is null
         user.setId(null);
+        //encrypt password
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String passwordString = passwordEncoder.encode(user.getPassword());
+        user.setPassword(passwordString);
+
         return usersRepository.save(user);
     }
 
