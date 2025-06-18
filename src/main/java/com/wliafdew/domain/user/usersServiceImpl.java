@@ -10,21 +10,21 @@ import org.springframework.stereotype.Service;
 
 import com.wliafdew.exception.ResourceNotFoundException;
 import com.wliafdew.model.users;
-import com.wliafdew.repo.usersRepository;
+import com.wliafdew.repo.UsersRepository;
 import com.wliafdew.service.usersService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 @Service
-public class usersServiceImpl implements usersService {
+public class UsersServiceImpl implements usersService {
 
-    usersRepository usersRepository;
+    UsersRepository usersRepository;
 
     private EntityManager entityManager;
 
     @Autowired
-    public void setUsersRepository(usersRepository usersRepository) {
+    public void setUsersRepository(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 
@@ -48,8 +48,18 @@ public class usersServiceImpl implements usersService {
     }
 
     @Override
-    public users insertUser(users user) {
+    public users insertUser(users user) throws Exception {
+        users checkUserEmail = usersRepository.getUserByEmail(user.getEmail());
+        if(checkUserEmail != null)
+            throw new Exception("User email already exists");
+
+        //set user id is null
         user.setId(null);
+        //encrypt password
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String passwordString = passwordEncoder.encode(user.getPassword());
+        user.setPassword(passwordString);
+
         return usersRepository.save(user);
     }
 

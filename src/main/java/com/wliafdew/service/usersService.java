@@ -11,7 +11,7 @@ public interface usersService {
 
     users getUserByID(UUID id) throws ResourceNotFoundException;
 
-    users insertUser(users user);
+    users insertUser(users user) throws Exception;
 
     users updateUsers(users user) throws ResourceNotFoundException;
 
